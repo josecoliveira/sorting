@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="coqdoc.css" rel="stylesheet" type="text/css" />
+<title></title>
+</head>
+
+<body>
+
+<div id="page">
+
+<div id="header">
+</div>
+
+<div id="main">
+
+<h1 class="libtitle">Library SelectionSort</h1>
+
+<div class="code">
+<span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <span class="id" title="var">Coq.Init.Datatypes</span>.<br/>
+<span class="id" title="keyword">Export</span> <span class="id" title="var">ListNotations</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab1"></a><h1 class="section">Definition</h1>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">select</span> (<span class="id" title="var">x</span>: <span class="id" title="var">nat</span>) (<span class="id" title="var">l</span>: <span class="id" title="var">list</span> <span class="id" title="var">nat</span>) : <span class="id" title="var">nat</span> * <span class="id" title="var">list</span> <span class="id" title="var">nat</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;|  <span class="id" title="var">nil</span> =&gt; (<span class="id" title="var">x</span>, <span class="id" title="var">nil</span>)<br/>
+&nbsp;&nbsp;|  <span class="id" title="var">h</span>::<span class="id" title="var">t</span> =&gt; <span class="id" title="keyword">if</span> <span class="id" title="var">x</span> &lt;=? <span class="id" title="var">h</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">then</span> <span class="id" title="keyword">let</span> (<span class="id" title="var">j</span>, <span class="id" title="var">l'</span>) := <span class="id" title="var">select</span> <span class="id" title="var">x</span> <span class="id" title="var">t</span> <span class="id" title="tactic">in</span> (<span class="id" title="var">j</span>, <span class="id" title="var">h</span>::<span class="id" title="var">l'</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">else</span> <span class="id" title="keyword">let</span> (<span class="id" title="var">j</span>, <span class="id" title="var">l'</span>) := <span class="id" title="var">select</span> <span class="id" title="var">h</span> <span class="id" title="var">t</span> <span class="id" title="tactic">in</span> (<span class="id" title="var">j</span>, <span class="id" title="var">x</span>::<span class="id" title="var">l'</span>)<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">selsort</span> <span class="id" title="var">l</span> <span class="id" title="var">n</span> {<span class="id" title="keyword">struct</span> <span class="id" title="var">n</span>} :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l</span>, <span class="id" title="var">n</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">x</span>::<span class="id" title="var">r</span>, <span class="id" title="var">S</span> <span class="id" title="var">n'</span> =&gt; <span class="id" title="keyword">let</span> (<span class="id" title="var">y</span>,<span class="id" title="var">r'</span>) := <span class="id" title="var">select</span> <span class="id" title="var">x</span> <span class="id" title="var">r</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">in</span> <span class="id" title="var">y</span> :: <span class="id" title="var">selsort</span> <span class="id" title="var">r'</span> <span class="id" title="var">n'</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">nil</span>, <span class="id" title="var">_</span> =&gt; <span class="id" title="var">nil</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">_</span>::<span class="id" title="var">_</span>, <span class="id" title="var">O</span> =&gt; <span class="id" title="var">nil</span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">selection_sort</span> <span class="id" title="var">l</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="var">selsort</span> <span class="id" title="var">l</span> (<span class="id" title="var">length</span> <span class="id" title="var">l</span>).<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab2"></a><h1 class="section">Correctness goal</h1>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">selection_sort_correct</span> : <span class="id" title="keyword">Prop</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="var">is_a_sorting_algorithm</span> <span class="id" title="var">selection_sort</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab3"></a><h1 class="section">Theorems with permutations</h1>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <span class="id" title="var">select_perm</span>: <span class="id" title="keyword">forall</span> <span class="id" title="var">x</span> <span class="id" title="var">l</span>,<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">let</span> (<span class="id" title="var">y</span>, <span class="id" title="var">r</span>) := <span class="id" title="var">select</span> <span class="id" title="var">x</span> <span class="id" title="var">l</span> <span class="id" title="tactic">in</span> <span class="id" title="var">Permutation</span> (<span class="id" title="var">x</span> :: <span class="id" title="var">l</span>) (<span class="id" title="var">y</span> :: <span class="id" title="var">r</span>).<br/>
+     
+<br/>
+<span class="id" title="keyword">Lemma</span> <span class="id" title="var">selsort_perm</span>:<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">forall</span> <span class="id" title="var">n</span> <span class="id" title="var">l</span>, <span class="id" title="var">length</span> <span class="id" title="var">l</span> = <span class="id" title="var">n</span> -&gt; <span class="id" title="var">Permutation</span> <span class="id" title="var">l</span> (<span class="id" title="var">selsort</span> <span class="id" title="var">l</span> <span class="id" title="var">n</span>).<br/>
+    
+<br/>
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">selection_sort_perm</span>:<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">forall</span> <span class="id" title="var">l</span>, <span class="id" title="var">Permutation</span> <span class="id" title="var">l</span> (<span class="id" title="var">selection_sort</span> <span class="id" title="var">l</span>).<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab4"></a><h1 class="section"><span class="inlinecode"><span class="id" title="var">select</span></span> selects the smallest element of a list</h1>
+
+</div>
+<div class="code">
+</div>
+<table>
+<tr>
+<td>Global Index</td>
+<td>A</td>
+<td>B</td>
+<td>C</td>
+<td>D</td>
+<td>E</td>
+<td>F</td>
+<td>G</td>
+<td>H</td>
+<td>I</td>
+<td>J</td>
+<td>K</td>
+<td>L</td>
+<td>M</td>
+<td>N</td>
+<td>O</td>
+<td>P</td>
+<td>Q</td>
+<td>R</td>
+<td><a href="index.html#global_S">S</a></td>
+<td>T</td>
+<td>U</td>
+<td>V</td>
+<td>W</td>
+<td>X</td>
+<td>Y</td>
+<td>Z</td>
+<td>_</td>
+<td>other</td>
+<td>(1 entry)</td>
+</tr>
+<tr>
+<td>Library Index</td>
+<td>A</td>
+<td>B</td>
+<td>C</td>
+<td>D</td>
+<td>E</td>
+<td>F</td>
+<td>G</td>
+<td>H</td>
+<td>I</td>
+<td>J</td>
+<td>K</td>
+<td>L</td>
+<td>M</td>
+<td>N</td>
+<td>O</td>
+<td>P</td>
+<td>Q</td>
+<td>R</td>
+<td><a href="index.html#library_S">S</a></td>
+<td>T</td>
+<td>U</td>
+<td>V</td>
+<td>W</td>
+<td>X</td>
+<td>Y</td>
+<td>Z</td>
+<td>_</td>
+<td>other</td>
+<td>(1 entry)</td>
+</tr>
+</table>
+<hr/>
+<h1>Global Index</h1>
+<a name="global_S"></a><h2>S </h2>
+<a href="SelectionSort.html">SelectionSort</a> [library]<br/>
+<br/><br/><hr/>
+<h1>Library Index</h1>
+<a name="library_S"></a><h2>S </h2>
+<a href="SelectionSort.html">SelectionSort</a> <br/>
+<br/><br/><hr/><table>
+<tr>
+<td>Global Index</td>
+<td>A</td>
+<td>B</td>
+<td>C</td>
+<td>D</td>
+<td>E</td>
+<td>F</td>
+<td>G</td>
+<td>H</td>
+<td>I</td>
+<td>J</td>
+<td>K</td>
+<td>L</td>
+<td>M</td>
+<td>N</td>
+<td>O</td>
+<td>P</td>
+<td>Q</td>
+<td>R</td>
+<td><a href="index.html#global_S">S</a></td>
+<td>T</td>
+<td>U</td>
+<td>V</td>
+<td>W</td>
+<td>X</td>
+<td>Y</td>
+<td>Z</td>
+<td>_</td>
+<td>other</td>
+<td>(1 entry)</td>
+</tr>
+<tr>
+<td>Library Index</td>
+<td>A</td>
+<td>B</td>
+<td>C</td>
+<td>D</td>
+<td>E</td>
+<td>F</td>
+<td>G</td>
+<td>H</td>
+<td>I</td>
+<td>J</td>
+<td>K</td>
+<td>L</td>
+<td>M</td>
+<td>N</td>
+<td>O</td>
+<td>P</td>
+<td>Q</td>
+<td>R</td>
+<td><a href="index.html#library_S">S</a></td>
+<td>T</td>
+<td>U</td>
+<td>V</td>
+<td>W</td>
+<td>X</td>
+<td>Y</td>
+<td>Z</td>
+<td>_</td>
+<td>other</td>
+<td>(1 entry)</td>
+</tr>
+</table>
+<hr/>This page has been generated by <a href="http://coq.inria.fr/">coqdoc</a>
+</div>
+
+</div>
+
+</body>
+</html>
