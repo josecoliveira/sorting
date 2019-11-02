@@ -1,4 +1,4 @@
-Makefile linguist-vendored
-Makefile.conf linguist-vendored
+Makefile linguist-generated
+Makefile.conf linguist-generated
 *.html linguist-documentation
 *.css linguist-documentation
