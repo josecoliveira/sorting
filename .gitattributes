@@ -1,0 +1,4 @@
+Makefile linguist-vendored
+Makefile.conf linguist-vendored
+*.html linguist-documentation
+*.css linguist-documentation
