@@ -1,7 +1,7 @@
-Require Export Coq.Init.Datatypes.
+(* Require Export Coq.Init.Datatypes. *)
 From sorting Require Export Utils.
 From sorting Require Export Sorted.
-Export ListNotations.
+(* Export ListNotations. *)
 
 
 (** * Definition  *)
@@ -32,7 +32,7 @@ Definition selection_sort_correct : Prop :=
   is_a_sorting_algorithm selection_sort.
 
 
-(** * Theorems with permutations *)
+(** * Permutations *)
 
 Lemma select_perm: forall x l,
   let (y, r) := select x l in Permutation (x :: l) (y :: r).
@@ -46,7 +46,6 @@ Proof.
       specialize (IHl x).
       destruct (select x l) eqn:Seq.
       apply perm_trans with (a :: n :: l0). {
-        Search Permutation.
         apply Permutation_sym.
         apply perm_trans with (a :: x :: l). {
           now apply perm_skip.
@@ -273,7 +272,8 @@ Qed.
 
 (** * Wrapping up **)
 
-Theorem selection_sort_is_correct: selection_sort_correct.
+Theorem selection_sort_is_correct:
+  selection_sort_correct.
 Proof.
   split.
   apply selection_sort_perm.

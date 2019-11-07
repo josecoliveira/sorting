@@ -1,8 +1,10 @@
-Require Export Coq.Lists.List.
-Require Export Permutation.
-
+(* Require Export Coq.Lists.List.
+Require Export Permutation. *)
 From sorting Require Export Utils.
 From sorting Require Export Sorted.
+
+
+(** * Definition *)
 
 Fixpoint insert (i:nat) (l: list nat) := 
   match l with
@@ -15,6 +17,15 @@ Fixpoint insertion_sort (l: list nat) : list nat :=
   | nil => nil
   | h::t => insert h (insertion_sort t)
 end.
+
+
+(** * Correctness goal **)
+
+Definition insertion_sort_correct : Prop :=
+  is_a_sorting_algorithm insertion_sort.
+
+
+(** * Permutations **)
 
 Lemma insert_perm: forall x l, Permutation (x::l) (insert x l).
 Proof.
@@ -94,6 +105,9 @@ Proof.
   }
 Qed.
 
+
+(** * Insertion of a element in a sorted list **)
+
 Lemma insert_sorted:
   forall a l, sorted l -> sorted (insert a l).
 Proof.
@@ -130,6 +144,9 @@ Proof.
   }
 Qed.
 
+
+(** * A list applied with insertion sort is sorted **)
+
 Theorem sort_sorted: forall l, sorted (insertion_sort l).
 Proof.
   intros.
@@ -141,4 +158,15 @@ Proof.
     apply insert_sorted.
     trivial.
   }
+Qed.
+
+
+(** * Wrapping up **)
+
+Theorem insertion_sort_is_correct:
+  insertion_sort_correct.
+Proof.
+  split.
+  apply sort_perm.
+  apply sort_sorted.
 Qed.

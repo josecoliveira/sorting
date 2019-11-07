@@ -1,6 +1,5 @@
 Require Export Coq.Lists.List.
 Require Export Permutation.
-
 From sorting Require Export Utils.
 
 Inductive sorted: list nat -> Prop := 
