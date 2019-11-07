@@ -2,3 +2,5 @@ Makefile linguist-generated
 Makefile.conf linguist-generated
 *.html linguist-documentation
 *.css linguist-documentation
+*.sty linguist-documentation
+
