@@ -1,0 +1,246 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="coqdoc.css" rel="stylesheet" type="text/css" />
+<title>InsertionSort</title>
+</head>
+
+<body>
+
+<div id="page">
+
+<div id="header">
+</div>
+
+<div id="main">
+
+<h1 class="libtitle">Library InsertionSort</h1>
+
+<div class="code">
+<span class="id" title="keyword">From</span> <span class="id" title="var">sorting</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <span class="id" title="var">Utils</span>.<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">sorting</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <span class="id" title="var">Sorted</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab1"></a><h1 class="section">Definition</h1>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">insert</span> (<span class="id" title="var">i</span>:<span class="id" title="var">nat</span>) (<span class="id" title="var">l</span>: <span class="id" title="var">list</span> <span class="id" title="var">nat</span>) := <br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">nil</span> =&gt; <span class="id" title="var">i</span>::<span class="id" title="var">nil</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">h</span>::<span class="id" title="var">t</span> =&gt; <span class="id" title="keyword">if</span> <span class="id" title="var">i</span> &lt;=? <span class="id" title="var">h</span> <span class="id" title="keyword">then</span> <span class="id" title="var">i</span>::<span class="id" title="var">h</span>::<span class="id" title="var">t</span> <span class="id" title="keyword">else</span> <span class="id" title="var">h</span> :: <span class="id" title="var">insert</span> <span class="id" title="var">i</span> <span class="id" title="var">t</span><br/>
+&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">insertion_sort</span> (<span class="id" title="var">l</span>: <span class="id" title="var">list</span> <span class="id" title="var">nat</span>) : <span class="id" title="var">list</span> <span class="id" title="var">nat</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">nil</span> =&gt; <span class="id" title="var">nil</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">h</span>::<span class="id" title="var">t</span> =&gt; <span class="id" title="var">insert</span> <span class="id" title="var">h</span> (<span class="id" title="var">insertion_sort</span> <span class="id" title="var">t</span>)<br/>
+<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab2"></a><h1 class="section">Correctness goal</h1>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">insertion_sort_correct</span> : <span class="id" title="keyword">Prop</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="var">is_a_sorting_algorithm</span> <span class="id" title="var">insertion_sort</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab3"></a><h1 class="section">Permutations</h1>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <span class="id" title="var">insert_perm</span>: <span class="id" title="keyword">forall</span> <span class="id" title="var">x</span> <span class="id" title="var">l</span>, <span class="id" title="var">Permutation</span> (<span class="id" title="var">x</span>::<span class="id" title="var">l</span>) (<span class="id" title="var">insert</span> <span class="id" title="var">x</span> <span class="id" title="var">l</span>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">induction</span> <span class="id" title="var">l</span>. {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">auto</span>.<br/>
+&nbsp;&nbsp;} {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">bdestruct</span> (<span class="id" title="var">x</span> &lt;=? <span class="id" title="var">a</span>). {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">auto</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;} {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">induction</span> <span class="id" title="var">l</span>. {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_swap</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_trans</span> <span class="id" title="keyword">with</span> (<span class="id" title="var">a</span> :: <span class="id" title="var">x</span> :: <span class="id" title="var">a0</span> :: <span class="id" title="var">l</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_swap</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_skip</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">IHl</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
+&nbsp;&nbsp;}<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">sort_perm</span>: <span class="id" title="keyword">forall</span> <span class="id" title="var">l</span>, <span class="id" title="var">Permutation</span> <span class="id" title="var">l</span> (<span class="id" title="var">insertion_sort</span> <span class="id" title="var">l</span>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">induction</span> <span class="id" title="var">l</span>. {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">auto</span>.<br/>
+&nbsp;&nbsp;} {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">induction</span> <span class="id" title="var">IHl</span>. {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">auto</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;} {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">bdestruct</span> (<span class="id" title="var">a</span> &lt;=? <span class="id" title="var">x</span>). {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">auto</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_trans</span> <span class="id" title="keyword">with</span> (<span class="id" title="var">x</span> :: <span class="id" title="var">a</span> :: <span class="id" title="var">l</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_swap</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">auto</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;} {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">bdestruct</span> (<span class="id" title="var">a</span> &lt;=? <span class="id" title="var">y</span>);<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">bdestruct</span> (<span class="id" title="var">a</span> &lt;=? <span class="id" title="var">x</span>). {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_skip</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_swap</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_trans</span> <span class="id" title="keyword">with</span> (<span class="id" title="var">a</span> :: <span class="id" title="var">x</span> :: <span class="id" title="var">y</span> :: <span class="id" title="var">l</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_skip</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_swap</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_swap</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_skip</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_swap</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_trans</span> <span class="id" title="keyword">with</span> (<span class="id" title="var">a</span> :: <span class="id" title="var">x</span> :: <span class="id" title="var">y</span> :: <span class="id" title="var">l</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_skip</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_swap</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_trans</span> <span class="id" title="keyword">with</span> (<span class="id" title="var">x</span> :: <span class="id" title="var">a</span> :: <span class="id" title="var">y</span> :: <span class="id" title="var">l</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_swap</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_skip</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_trans</span> <span class="id" title="keyword">with</span> (<span class="id" title="var">y</span> :: <span class="id" title="var">a</span> :: <span class="id" title="var">l</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_swap</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_skip</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">insert_perm</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;} {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">assert</span> (<span class="id" title="var">Permutation</span> (<span class="id" title="var">a</span> :: <span class="id" title="var">l'</span>) (<span class="id" title="var">insert</span> <span class="id" title="var">a</span> <span class="id" title="var">l'</span>)).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">insert_perm</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">assert</span> (<span class="id" title="var">Permutation</span> (<span class="id" title="var">a</span> :: <span class="id" title="var">l</span>) (<span class="id" title="var">a</span> :: <span class="id" title="var">l'</span>)).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_skip</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">IHl1</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">perm_trans</span> <span class="id" title="keyword">with</span> (<span class="id" title="var">a</span> :: <span class="id" title="var">l'</span>);<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">auto</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
+&nbsp;&nbsp;}<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab4"></a><h1 class="section">Insertion of a element in a sorted list</h1>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <span class="id" title="var">insert_sorted</span>:<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">forall</span> <span class="id" title="var">a</span> <span class="id" title="var">l</span>, <span class="id" title="var">sorted</span> <span class="id" title="var">l</span> -&gt; <span class="id" title="var">sorted</span> (<span class="id" title="var">insert</span> <span class="id" title="var">a</span> <span class="id" title="var">l</span>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">induction</span> <span class="id" title="var">H</span>. {<br/>
+&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>.<br/>
+&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">sorted_1</span>.<br/>
+&nbsp;&nbsp;} {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">bdestruct</span> (<span class="id" title="var">a</span> &lt;=? <span class="id" title="var">x</span>). {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">sorted_cons</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">trivial</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">sorted_1</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;} {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">sorted_cons</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">omega</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">sorted_1</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
+&nbsp;&nbsp;} {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">bdestruct</span> (<span class="id" title="var">a</span> &lt;=? <span class="id" title="var">x</span>);<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">bdestruct</span> (<span class="id" title="var">a</span> &lt;=? <span class="id" title="var">y</span>);<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">sorted_cons</span>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">try</span> <span class="id" title="tactic">omega</span>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">try</span> <span class="id" title="tactic">apply</span> <span class="id" title="var">sorted_cons</span>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">try</span> <span class="id" title="tactic">omega</span>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">try</span> <span class="id" title="tactic">apply</span> <span class="id" title="var">H0</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span> <span class="id" title="tactic">in</span> <span class="id" title="var">IHsorted</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">bdestruct</span> (<span class="id" title="var">a</span> &lt;=? <span class="id" title="var">y</span>). {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">omega</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;} {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">trivial</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
+&nbsp;&nbsp;}<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab5"></a><h1 class="section">A list applied with insertion sort is sorted</h1>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">sort_sorted</span>: <span class="id" title="keyword">forall</span> <span class="id" title="var">l</span>, <span class="id" title="var">sorted</span> (<span class="id" title="var">insertion_sort</span> <span class="id" title="var">l</span>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">induction</span> <span class="id" title="var">l</span>. {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">sorted_nil</span>.<br/>
+&nbsp;&nbsp;} {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">insert_sorted</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">trivial</span>.<br/>
+&nbsp;&nbsp;}<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab6"></a><h1 class="section">Wrapping up</h1>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">insertion_sort_is_correct</span>:<br/>
+&nbsp;&nbsp;<span class="id" title="var">insertion_sort_correct</span>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">split</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">sort_perm</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">sort_sorted</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+</div>
+</div>
+
+<div id="footer">
+<hr/><a href="index.html">Index</a><hr/>This page has been generated by <a href="http://coq.inria.fr/">coqdoc</a>
+</div>
+
+</div>
+
+</body>
+</html>
