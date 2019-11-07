@@ -20,6 +20,8 @@
 
 <div class="code">
 <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <span class="id" title="var">Coq.Init.Datatypes</span>.<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">sorting</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <span class="id" title="var">Utils</span>.<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">sorting</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <span class="id" title="var">Sorted</span>.<br/>
 <span class="id" title="keyword">Export</span> <span class="id" title="var">ListNotations</span>.<br/>
 
 <br/>
@@ -95,6 +97,50 @@
 
 </div>
 <div class="code">
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <span class="id" title="var">select_smallest_aux</span>:<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">forall</span> <span class="id" title="var">x</span> <span class="id" title="var">al</span> <span class="id" title="var">y</span> <span class="id" title="var">bl</span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Forall</span> (<span class="id" title="keyword">fun</span> <span class="id" title="var">z</span> =&gt; <span class="id" title="var">y</span> &lt;= <span class="id" title="var">z</span>) <span class="id" title="var">bl</span> -&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">select</span> <span class="id" title="var">x</span> <span class="id" title="var">al</span> = (<span class="id" title="var">y</span>,<span class="id" title="var">bl</span>) -&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">y</span> &lt;= <span class="id" title="var">x</span>.<br/>
+  
+<br/>
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">select_smallest</span>:<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">forall</span> <span class="id" title="var">x</span> <span class="id" title="var">al</span> <span class="id" title="var">y</span> <span class="id" title="var">bl</span>, <span class="id" title="var">select</span> <span class="id" title="var">x</span> <span class="id" title="var">al</span> = (<span class="id" title="var">y</span>,<span class="id" title="var">bl</span>) -&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Forall</span> (<span class="id" title="keyword">fun</span> <span class="id" title="var">z</span> =&gt; <span class="id" title="var">y</span> &lt;= <span class="id" title="var">z</span>) <span class="id" title="var">bl</span>.<br/>
+       
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab5"></a><h1 class="section">A list applied with selection sort is sorted</h1>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <span class="id" title="var">selection_sort_sorted_aux</span>:<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">forall</span>  <span class="id" title="var">y</span> <span class="id" title="var">bl</span>,<br/>
+&nbsp;&nbsp;&nbsp;<span class="id" title="var">sorted</span> (<span class="id" title="var">selsort</span> <span class="id" title="var">bl</span> (<span class="id" title="var">length</span> <span class="id" title="var">bl</span>)) -&gt;<br/>
+&nbsp;&nbsp;&nbsp;<span class="id" title="var">Forall</span> (<span class="id" title="keyword">fun</span> <span class="id" title="var">z</span> : <span class="id" title="var">nat</span> =&gt; <span class="id" title="var">y</span> &lt;= <span class="id" title="var">z</span>) <span class="id" title="var">bl</span> -&gt;<br/>
+&nbsp;&nbsp;&nbsp;<span class="id" title="var">sorted</span> (<span class="id" title="var">y</span> :: <span class="id" title="var">selsort</span> <span class="id" title="var">bl</span> (<span class="id" title="var">length</span> <span class="id" title="var">bl</span>)).<br/>
+   
+<br/>
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">selection_sort_sorted</span>:<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">forall</span> <span class="id" title="var">al</span>, <span class="id" title="var">sorted</span> (<span class="id" title="var">selection_sort</span> <span class="id" title="var">al</span>).<br/>
+    
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab6"></a><h1 class="section">Wrapping up</h1>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">selection_sort_is_correct</span>: <span class="id" title="var">selection_sort_correct</span>.<br/>
 </div>
 <table>
 <tr>
