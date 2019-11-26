@@ -16,7 +16,7 @@
 
 <div id="main">
 
-<h1 class="libtitle">Library SelectionSort</h1>
+<h1 class="libtitle">SelectionSort</h1>
 
 <div class="code">
 <span class="id" title="keyword">From</span> <span class="id" title="var">sorting</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <span class="id" title="var">Utils</span>.<br/>
@@ -32,25 +32,25 @@
 <div class="code">
 
 <br/>
-<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">select</span> (<span class="id" title="var">x</span>: <span class="id" title="var">nat</span>) (<span class="id" title="var">l</span>: <span class="id" title="var">list</span> <span class="id" title="var">nat</span>) : <span class="id" title="var">nat</span> * <span class="id" title="var">list</span> <span class="id" title="var">nat</span> :=<br/>
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">select</span> (<span class="id" title="var">x</span> : <span class="id" title="var">nat</span>) (<span class="id" title="var">l</span> : <span class="id" title="var">list</span> <span class="id" title="var">nat</span>) : <span class="id" title="var">nat</span> * <span class="id" title="var">list</span> <span class="id" title="var">nat</span> :=<br/>
 &nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l</span> <span class="id" title="keyword">with</span><br/>
 &nbsp;&nbsp;|  <span class="id" title="var">nil</span> =&gt; (<span class="id" title="var">x</span>, <span class="id" title="var">nil</span>)<br/>
-&nbsp;&nbsp;|  <span class="id" title="var">h</span>::<span class="id" title="var">t</span> =&gt; <span class="id" title="keyword">if</span> <span class="id" title="var">x</span> &lt;=? <span class="id" title="var">h</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">then</span> <span class="id" title="keyword">let</span> (<span class="id" title="var">j</span>, <span class="id" title="var">l'</span>) := <span class="id" title="var">select</span> <span class="id" title="var">x</span> <span class="id" title="var">t</span> <span class="id" title="tactic">in</span> (<span class="id" title="var">j</span>, <span class="id" title="var">h</span>::<span class="id" title="var">l'</span>)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">else</span> <span class="id" title="keyword">let</span> (<span class="id" title="var">j</span>, <span class="id" title="var">l'</span>) := <span class="id" title="var">select</span> <span class="id" title="var">h</span> <span class="id" title="var">t</span> <span class="id" title="tactic">in</span> (<span class="id" title="var">j</span>, <span class="id" title="var">x</span>::<span class="id" title="var">l'</span>)<br/>
+&nbsp;&nbsp;|  <span class="id" title="var">h</span> :: <span class="id" title="var">t</span> =&gt; <span class="id" title="keyword">if</span> <span class="id" title="var">x</span> &lt;=? <span class="id" title="var">h</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">then</span> <span class="id" title="keyword">let</span> (<span class="id" title="var">j</span>, <span class="id" title="var">l'</span>) := <span class="id" title="var">select</span> <span class="id" title="var">x</span> <span class="id" title="var">t</span> <span class="id" title="tactic">in</span> (<span class="id" title="var">j</span>, <span class="id" title="var">h</span> :: <span class="id" title="var">l'</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">else</span> <span class="id" title="keyword">let</span> (<span class="id" title="var">j</span>, <span class="id" title="var">l'</span>) := <span class="id" title="var">select</span> <span class="id" title="var">h</span> <span class="id" title="var">t</span> <span class="id" title="tactic">in</span> (<span class="id" title="var">j</span>, <span class="id" title="var">x</span> :: <span class="id" title="var">l'</span>)<br/>
 &nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
 
 <br/>
-<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">selsort</span> <span class="id" title="var">l</span> <span class="id" title="var">n</span> {<span class="id" title="keyword">struct</span> <span class="id" title="var">n</span>} :=<br/>
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">selsort</span> (<span class="id" title="var">l</span> : <span class="id" title="var">list</span> <span class="id" title="var">nat</span>) (<span class="id" title="var">n</span> : <span class="id" title="var">nat</span>) {<span class="id" title="keyword">struct</span> <span class="id" title="var">n</span>} :=<br/>
 &nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l</span>, <span class="id" title="var">n</span> <span class="id" title="keyword">with</span><br/>
-&nbsp;&nbsp;| <span class="id" title="var">x</span>::<span class="id" title="var">r</span>, <span class="id" title="var">S</span> <span class="id" title="var">n'</span> =&gt; <span class="id" title="keyword">let</span> (<span class="id" title="var">y</span>,<span class="id" title="var">r'</span>) := <span class="id" title="var">select</span> <span class="id" title="var">x</span> <span class="id" title="var">r</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">x</span> :: <span class="id" title="var">r</span>, <span class="id" title="var">S</span> <span class="id" title="var">n'</span> =&gt; <span class="id" title="keyword">let</span> (<span class="id" title="var">y</span>,<span class="id" title="var">r'</span>) := <span class="id" title="var">select</span> <span class="id" title="var">x</span> <span class="id" title="var">r</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">in</span> <span class="id" title="var">y</span> :: <span class="id" title="var">selsort</span> <span class="id" title="var">r'</span> <span class="id" title="var">n'</span><br/>
 &nbsp;&nbsp;| <span class="id" title="var">nil</span>, <span class="id" title="var">_</span> =&gt; <span class="id" title="var">nil</span><br/>
-&nbsp;&nbsp;| <span class="id" title="var">_</span>::<span class="id" title="var">_</span>, <span class="id" title="var">O</span> =&gt; <span class="id" title="var">nil</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">_</span> :: <span class="id" title="var">_</span>, <span class="id" title="var">O</span> =&gt; <span class="id" title="var">nil</span><br/>
 &nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
 
 <br/>
-<span class="id" title="keyword">Definition</span> <span class="id" title="var">selection_sort</span> <span class="id" title="var">l</span> :=<br/>
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">selection_sort</span> (<span class="id" title="var">l</span> : <span class="id" title="var">list</span> <span class="id" title="var">nat</span>) :=<br/>
 &nbsp;&nbsp;<span class="id" title="var">selsort</span> <span class="id" title="var">l</span> (<span class="id" title="var">length</span> <span class="id" title="var">l</span>).<br/>
 
 <br/>
@@ -76,8 +76,9 @@
 <div class="code">
 
 <br/>
-<span class="id" title="keyword">Lemma</span> <span class="id" title="var">select_perm</span>: <span class="id" title="keyword">forall</span> <span class="id" title="var">x</span> <span class="id" title="var">l</span>,<br/>
-&nbsp;&nbsp;<span class="id" title="keyword">let</span> (<span class="id" title="var">y</span>, <span class="id" title="var">r</span>) := <span class="id" title="var">select</span> <span class="id" title="var">x</span> <span class="id" title="var">l</span> <span class="id" title="tactic">in</span> <span class="id" title="var">Permutation</span> (<span class="id" title="var">x</span> :: <span class="id" title="var">l</span>) (<span class="id" title="var">y</span> :: <span class="id" title="var">r</span>).<br/>
+<span class="id" title="keyword">Lemma</span> <span class="id" title="var">select_perm</span>:<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">forall</span> (<span class="id" title="var">x</span> : <span class="id" title="var">nat</span>) (<span class="id" title="var">l</span> : <span class="id" title="var">list</span> <span class="id" title="var">nat</span>),<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> (<span class="id" title="var">y</span>, <span class="id" title="var">r</span>) := <span class="id" title="var">select</span> <span class="id" title="var">x</span> <span class="id" title="var">l</span> <span class="id" title="tactic">in</span> <span class="id" title="var">Permutation</span> (<span class="id" title="var">x</span> :: <span class="id" title="var">l</span>) (<span class="id" title="var">y</span> :: <span class="id" title="var">r</span>).<br/>
 <span class="id" title="keyword">Proof</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">x</span> <span class="id" title="var">l</span>; <span class="id" title="var">revert</span> <span class="id" title="var">x</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">induction</span> <span class="id" title="var">l</span>; <span class="id" title="tactic">intros</span>; <span class="id" title="tactic">simpl</span> <span class="id" title="tactic">in</span> *. {<br/>
@@ -111,7 +112,7 @@
 
 <br/>
 <span class="id" title="keyword">Lemma</span> <span class="id" title="var">selsort_perm</span>:<br/>
-&nbsp;&nbsp;<span class="id" title="keyword">forall</span> <span class="id" title="var">n</span> <span class="id" title="var">l</span>, <span class="id" title="var">length</span> <span class="id" title="var">l</span> = <span class="id" title="var">n</span> -&gt; <span class="id" title="var">Permutation</span> <span class="id" title="var">l</span> (<span class="id" title="var">selsort</span> <span class="id" title="var">l</span> <span class="id" title="var">n</span>).<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">forall</span> (<span class="id" title="var">n</span> : <span class="id" title="var">nat</span>) (<span class="id" title="var">l</span> : <span class="id" title="var">list</span> <span class="id" title="var">nat</span>), <span class="id" title="var">length</span> <span class="id" title="var">l</span> = <span class="id" title="var">n</span> -&gt; <span class="id" title="var">Permutation</span> <span class="id" title="var">l</span> (<span class="id" title="var">selsort</span> <span class="id" title="var">l</span> <span class="id" title="var">n</span>).<br/>
 <span class="id" title="keyword">Proof</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">induction</span> <span class="id" title="var">n</span>. {<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
@@ -157,7 +158,7 @@
 
 <br/>
 <span class="id" title="keyword">Theorem</span> <span class="id" title="var">selection_sort_perm</span>:<br/>
-&nbsp;&nbsp;<span class="id" title="keyword">forall</span> <span class="id" title="var">l</span>, <span class="id" title="var">Permutation</span> <span class="id" title="var">l</span> (<span class="id" title="var">selection_sort</span> <span class="id" title="var">l</span>).<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">forall</span> (<span class="id" title="var">l</span> : <span class="id" title="var">list</span> <span class="id" title="var">nat</span>), <span class="id" title="var">Permutation</span> <span class="id" title="var">l</span> (<span class="id" title="var">selection_sort</span> <span class="id" title="var">l</span>).<br/>
 <span class="id" title="keyword">Proof</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <span class="id" title="var">selection_sort</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
@@ -176,7 +177,7 @@
 
 <br/>
 <span class="id" title="keyword">Lemma</span> <span class="id" title="var">select_smallest_aux</span>:<br/>
-&nbsp;&nbsp;<span class="id" title="keyword">forall</span> <span class="id" title="var">x</span> <span class="id" title="var">al</span> <span class="id" title="var">y</span> <span class="id" title="var">bl</span>,<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">forall</span> (<span class="id" title="var">x</span> : <span class="id" title="var">nat</span>) (<span class="id" title="var">al</span> : <span class="id" title="var">list</span> <span class="id" title="var">nat</span>) (<span class="id" title="var">y</span> : <span class="id" title="var">nat</span>) (<span class="id" title="var">bl</span> : <span class="id" title="var">list</span> <span class="id" title="var">nat</span>),<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Forall</span> (<span class="id" title="keyword">fun</span> <span class="id" title="var">z</span> =&gt; <span class="id" title="var">y</span> &lt;= <span class="id" title="var">z</span>) <span class="id" title="var">bl</span> -&gt;<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">select</span> <span class="id" title="var">x</span> <span class="id" title="var">al</span> = (<span class="id" title="var">y</span>,<span class="id" title="var">bl</span>) -&gt;<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">y</span> &lt;= <span class="id" title="var">x</span>.<br/>
@@ -199,8 +200,9 @@
 
 <br/>
 <span class="id" title="keyword">Theorem</span> <span class="id" title="var">select_smallest</span>:<br/>
-&nbsp;&nbsp;<span class="id" title="keyword">forall</span> <span class="id" title="var">x</span> <span class="id" title="var">al</span> <span class="id" title="var">y</span> <span class="id" title="var">bl</span>, <span class="id" title="var">select</span> <span class="id" title="var">x</span> <span class="id" title="var">al</span> = (<span class="id" title="var">y</span>,<span class="id" title="var">bl</span>) -&gt;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Forall</span> (<span class="id" title="keyword">fun</span> <span class="id" title="var">z</span> =&gt; <span class="id" title="var">y</span> &lt;= <span class="id" title="var">z</span>) <span class="id" title="var">bl</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">forall</span> (<span class="id" title="var">x</span> : <span class="id" title="var">nat</span>) (<span class="id" title="var">al</span> : <span class="id" title="var">list</span> <span class="id" title="var">nat</span>) (<span class="id" title="var">y</span> : <span class="id" title="var">nat</span>) (<span class="id" title="var">bl</span> : <span class="id" title="var">list</span> <span class="id" title="var">nat</span>),<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">select</span> <span class="id" title="var">x</span> <span class="id" title="var">al</span> = (<span class="id" title="var">y</span>,<span class="id" title="var">bl</span>) -&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Forall</span> (<span class="id" title="keyword">fun</span> <span class="id" title="var">z</span> =&gt; <span class="id" title="var">y</span> &lt;= <span class="id" title="var">z</span>) <span class="id" title="var">bl</span>.<br/>
 <span class="id" title="keyword">Proof</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">x</span> <span class="id" title="var">al</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">revert</span> <span class="id" title="var">x</span>.<br/>
@@ -258,7 +260,7 @@
 
 <br/>
 <span class="id" title="keyword">Lemma</span> <span class="id" title="var">selection_sort_sorted_aux</span>:<br/>
-&nbsp;&nbsp;<span class="id" title="keyword">forall</span>  <span class="id" title="var">y</span> <span class="id" title="var">bl</span>,<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">forall</span> (<span class="id" title="var">y</span> : <span class="id" title="var">nat</span>) (<span class="id" title="var">bl</span> : <span class="id" title="var">list</span> <span class="id" title="var">nat</span>),<br/>
 &nbsp;&nbsp;&nbsp;<span class="id" title="var">sorted</span> (<span class="id" title="var">selsort</span> <span class="id" title="var">bl</span> (<span class="id" title="var">length</span> <span class="id" title="var">bl</span>)) -&gt;<br/>
 &nbsp;&nbsp;&nbsp;<span class="id" title="var">Forall</span> (<span class="id" title="keyword">fun</span> <span class="id" title="var">z</span> : <span class="id" title="var">nat</span> =&gt; <span class="id" title="var">y</span> &lt;= <span class="id" title="var">z</span>) <span class="id" title="var">bl</span> -&gt;<br/>
 &nbsp;&nbsp;&nbsp;<span class="id" title="var">sorted</span> (<span class="id" title="var">y</span> :: <span class="id" title="var">selsort</span> <span class="id" title="var">bl</span> (<span class="id" title="var">length</span> <span class="id" title="var">bl</span>)).<br/>
@@ -290,7 +292,7 @@
 
 <br/>
 <span class="id" title="keyword">Theorem</span> <span class="id" title="var">selection_sort_sorted</span>:<br/>
-&nbsp;&nbsp;<span class="id" title="keyword">forall</span> <span class="id" title="var">al</span>, <span class="id" title="var">sorted</span> (<span class="id" title="var">selection_sort</span> <span class="id" title="var">al</span>).<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">forall</span> (<span class="id" title="var">al</span> : <span class="id" title="var">list</span> <span class="id" title="var">nat</span>), <span class="id" title="var">sorted</span> (<span class="id" title="var">selection_sort</span> <span class="id" title="var">al</span>).<br/>
 <span class="id" title="keyword">Proof</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <span class="id" title="var">selection_sort</span>.<br/>

@@ -16,7 +16,7 @@
 
 <div id="main">
 
-<h1 class="libtitle">Library InsertionSort</h1>
+<h1 class="libtitle">InsertionSort</h1>
 
 <div class="code">
 <span class="id" title="keyword">From</span> <span class="id" title="var">sorting</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <span class="id" title="var">Utils</span>.<br/>
@@ -32,18 +32,18 @@
 <div class="code">
 
 <br/>
-<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">insert</span> (<span class="id" title="var">i</span>:<span class="id" title="var">nat</span>) (<span class="id" title="var">l</span>: <span class="id" title="var">list</span> <span class="id" title="var">nat</span>) := <br/>
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">insert</span> (<span class="id" title="var">i</span> : <span class="id" title="var">nat</span>) (<span class="id" title="var">l</span> : <span class="id" title="var">list</span> <span class="id" title="var">nat</span>) := <br/>
 &nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l</span> <span class="id" title="keyword">with</span><br/>
 &nbsp;&nbsp;| <span class="id" title="var">nil</span> =&gt; <span class="id" title="var">i</span>::<span class="id" title="var">nil</span><br/>
-&nbsp;&nbsp;| <span class="id" title="var">h</span>::<span class="id" title="var">t</span> =&gt; <span class="id" title="keyword">if</span> <span class="id" title="var">i</span> &lt;=? <span class="id" title="var">h</span> <span class="id" title="keyword">then</span> <span class="id" title="var">i</span>::<span class="id" title="var">h</span>::<span class="id" title="var">t</span> <span class="id" title="keyword">else</span> <span class="id" title="var">h</span> :: <span class="id" title="var">insert</span> <span class="id" title="var">i</span> <span class="id" title="var">t</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">h</span> :: <span class="id" title="var">t</span> =&gt; <span class="id" title="keyword">if</span> <span class="id" title="var">i</span> &lt;=? <span class="id" title="var">h</span> <span class="id" title="keyword">then</span> <span class="id" title="var">i</span> :: <span class="id" title="var">h</span> :: <span class="id" title="var">t</span> <span class="id" title="keyword">else</span> <span class="id" title="var">h</span> :: <span class="id" title="var">insert</span> <span class="id" title="var">i</span> <span class="id" title="var">t</span><br/>
 &nbsp;<span class="id" title="keyword">end</span>.<br/>
 
 <br/>
-<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">insertion_sort</span> (<span class="id" title="var">l</span>: <span class="id" title="var">list</span> <span class="id" title="var">nat</span>) : <span class="id" title="var">list</span> <span class="id" title="var">nat</span> :=<br/>
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">insertion_sort</span> (<span class="id" title="var">l</span> : <span class="id" title="var">list</span> <span class="id" title="var">nat</span>) : <span class="id" title="var">list</span> <span class="id" title="var">nat</span> :=<br/>
 &nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l</span> <span class="id" title="keyword">with</span><br/>
 &nbsp;&nbsp;| <span class="id" title="var">nil</span> =&gt; <span class="id" title="var">nil</span><br/>
-&nbsp;&nbsp;| <span class="id" title="var">h</span>::<span class="id" title="var">t</span> =&gt; <span class="id" title="var">insert</span> <span class="id" title="var">h</span> (<span class="id" title="var">insertion_sort</span> <span class="id" title="var">t</span>)<br/>
-<span class="id" title="keyword">end</span>.<br/>
+&nbsp;&nbsp;| <span class="id" title="var">h</span> :: <span class="id" title="var">t</span> =&gt; <span class="id" title="var">insert</span> <span class="id" title="var">h</span> (<span class="id" title="var">insertion_sort</span> <span class="id" title="var">t</span>)<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
 
 <br/>
 </div>
@@ -68,7 +68,8 @@
 <div class="code">
 
 <br/>
-<span class="id" title="keyword">Lemma</span> <span class="id" title="var">insert_perm</span>: <span class="id" title="keyword">forall</span> <span class="id" title="var">x</span> <span class="id" title="var">l</span>, <span class="id" title="var">Permutation</span> (<span class="id" title="var">x</span>::<span class="id" title="var">l</span>) (<span class="id" title="var">insert</span> <span class="id" title="var">x</span> <span class="id" title="var">l</span>).<br/>
+<span class="id" title="keyword">Lemma</span> <span class="id" title="var">insert_perm</span>:<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">forall</span> (<span class="id" title="var">x</span> : <span class="id" title="var">nat</span>) (<span class="id" title="var">l</span> : <span class="id" title="var">list</span> <span class="id" title="var">nat</span>), <span class="id" title="var">Permutation</span> (<span class="id" title="var">x</span>::<span class="id" title="var">l</span>) (<span class="id" title="var">insert</span> <span class="id" title="var">x</span> <span class="id" title="var">l</span>).<br/>
 <span class="id" title="keyword">Proof</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">induction</span> <span class="id" title="var">l</span>. {<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">auto</span>.<br/>
@@ -91,7 +92,8 @@
 <span class="id" title="keyword">Qed</span>.<br/>
 
 <br/>
-<span class="id" title="keyword">Theorem</span> <span class="id" title="var">sort_perm</span>: <span class="id" title="keyword">forall</span> <span class="id" title="var">l</span>, <span class="id" title="var">Permutation</span> <span class="id" title="var">l</span> (<span class="id" title="var">insertion_sort</span> <span class="id" title="var">l</span>).<br/>
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">sort_perm</span>:<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">forall</span> (<span class="id" title="var">l</span> : <span class="id" title="var">list</span> <span class="id" title="var">nat</span>), <span class="id" title="var">Permutation</span> <span class="id" title="var">l</span> (<span class="id" title="var">insertion_sort</span> <span class="id" title="var">l</span>).<br/>
 <span class="id" title="keyword">Proof</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">induction</span> <span class="id" title="var">l</span>. {<br/>
@@ -158,7 +160,7 @@
 
 <br/>
 <span class="id" title="keyword">Lemma</span> <span class="id" title="var">insert_sorted</span>:<br/>
-&nbsp;&nbsp;<span class="id" title="keyword">forall</span> <span class="id" title="var">a</span> <span class="id" title="var">l</span>, <span class="id" title="var">sorted</span> <span class="id" title="var">l</span> -&gt; <span class="id" title="var">sorted</span> (<span class="id" title="var">insert</span> <span class="id" title="var">a</span> <span class="id" title="var">l</span>).<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">forall</span> (<span class="id" title="var">a</span> : <span class="id" title="var">nat</span>) (<span class="id" title="var">l</span> : <span class="id" title="var">list</span> <span class="id" title="var">nat</span>), <span class="id" title="var">sorted</span> <span class="id" title="var">l</span> -&gt; <span class="id" title="var">sorted</span> (<span class="id" title="var">insert</span> <span class="id" title="var">a</span> <span class="id" title="var">l</span>).<br/>
 <span class="id" title="keyword">Proof</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">induction</span> <span class="id" title="var">H</span>. {<br/>
@@ -203,7 +205,8 @@
 <div class="code">
 
 <br/>
-<span class="id" title="keyword">Theorem</span> <span class="id" title="var">sort_sorted</span>: <span class="id" title="keyword">forall</span> <span class="id" title="var">l</span>, <span class="id" title="var">sorted</span> (<span class="id" title="var">insertion_sort</span> <span class="id" title="var">l</span>).<br/>
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">sort_sorted</span>:<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">forall</span> (<span class="id" title="var">l</span> : <span class="id" title="var">list</span> <span class="id" title="var">nat</span>), <span class="id" title="var">sorted</span> (<span class="id" title="var">insertion_sort</span> <span class="id" title="var">l</span>).<br/>
 <span class="id" title="keyword">Proof</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">induction</span> <span class="id" title="var">l</span>. {<br/>
