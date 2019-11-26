@@ -1,22 +1,20 @@
-(* Require Export Coq.Lists.List.
-Require Export Permutation. *)
 From sorting Require Export Utils.
 From sorting Require Export Sorted.
 
 
 (** * Definition *)
 
-Fixpoint insert (i:nat) (l: list nat) := 
+Fixpoint insert (i : nat) (l : list nat) := 
   match l with
   | nil => i::nil
-  | h::t => if i <=? h then i::h::t else h :: insert i t
+  | h :: t => if i <=? h then i :: h :: t else h :: insert i t
  end.
 
-Fixpoint insertion_sort (l: list nat) : list nat :=
+Fixpoint insertion_sort (l : list nat) : list nat :=
   match l with
   | nil => nil
-  | h::t => insert h (insertion_sort t)
-end.
+  | h :: t => insert h (insertion_sort t)
+  end.
 
 
 (** * Correctness goal **)
@@ -27,7 +25,8 @@ Definition insertion_sort_correct : Prop :=
 
 (** * Permutations **)
 
-Lemma insert_perm: forall x l, Permutation (x::l) (insert x l).
+Lemma insert_perm:
+  forall (x : nat) (l : list nat), Permutation (x::l) (insert x l).
 Proof.
   induction l. {
     auto.
@@ -49,7 +48,8 @@ Proof.
   }
 Qed.
 
-Theorem sort_perm: forall l, Permutation l (insertion_sort l).
+Theorem sort_perm:
+  forall (l : list nat), Permutation l (insertion_sort l).
 Proof.
   intros.
   induction l. {
@@ -109,7 +109,7 @@ Qed.
 (** * Insertion of a element in a sorted list **)
 
 Lemma insert_sorted:
-  forall a l, sorted l -> sorted (insert a l).
+  forall (a : nat) (l : list nat), sorted l -> sorted (insert a l).
 Proof.
   intros.
   induction H. {
@@ -147,7 +147,8 @@ Qed.
 
 (** * A list applied with insertion sort is sorted **)
 
-Theorem sort_sorted: forall l, sorted (insertion_sort l).
+Theorem sort_sorted:
+  forall (l : list nat), sorted (insertion_sort l).
 Proof.
   intros.
   induction l. {

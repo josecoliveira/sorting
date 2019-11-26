@@ -1,22 +1,31 @@
 Require Export Coq.omega.Omega.
 Require Export Coq.Bool.Bool.
 
-Lemma beq_reflect : forall x y, reflect (x = y) (x =? y).
+Lemma beq_reflect:
+  forall (x y : nat), reflect (x = y) (x =? y).
 Proof.
   intros x y.
-  apply iff_reflect. symmetry.  apply beq_nat_true_iff.
+  apply iff_reflect.
+  symmetry.
+  apply beq_nat_true_iff.
 Qed.
 
-Lemma blt_reflect : forall x y, reflect (x < y) (x <? y).
+Lemma blt_reflect:
+  forall (x y : nat), reflect (x < y) (x <? y).
 Proof.
   intros x y.
-  apply iff_reflect. symmetry. apply Nat.ltb_lt.
+  apply iff_reflect.
+  symmetry.
+  apply Nat.ltb_lt.
 Qed.
 
-Lemma ble_reflect : forall x y, reflect (x <= y) (x <=? y).
+Lemma ble_reflect:
+  forall (x y : nat), reflect (x <= y) (x <=? y).
 Proof.
   intros x y.
-  apply iff_reflect. symmetry. apply Nat.leb_le.
+  apply iff_reflect.
+  symmetry.
+  apply Nat.leb_le.
 Qed.
 
 Hint Resolve blt_reflect ble_reflect beq_reflect : bdestruct.

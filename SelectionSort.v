@@ -1,28 +1,26 @@
-(* Require Export Coq.Init.Datatypes. *)
 From sorting Require Export Utils.
 From sorting Require Export Sorted.
-(* Export ListNotations. *)
 
 
 (** * Definition  *)
 
-Fixpoint select (x: nat) (l: list nat) : nat * list nat :=
+Fixpoint select (x : nat) (l : list nat) : nat * list nat :=
   match l with
   |  nil => (x, nil)
-  |  h::t => if x <=? h
-                 then let (j, l') := select x t in (j, h::l')
-                 else let (j, l') := select h t in (j, x::l')
+  |  h :: t => if x <=? h
+                 then let (j, l') := select x t in (j, h :: l')
+                 else let (j, l') := select h t in (j, x :: l')
   end.
 
-Fixpoint selsort l n {struct n} :=
+Fixpoint selsort (l : list nat) (n : nat) {struct n} :=
   match l, n with
-  | x::r, S n' => let (y,r') := select x r
+  | x :: r, S n' => let (y,r') := select x r
                  in y :: selsort r' n'
   | nil, _ => nil
-  | _::_, O => nil
+  | _ :: _, O => nil
   end.
 
-Definition selection_sort l :=
+Definition selection_sort (l : list nat) :=
   selsort l (length l).
 
 
@@ -34,8 +32,9 @@ Definition selection_sort_correct : Prop :=
 
 (** * Permutations *)
 
-Lemma select_perm: forall x l,
-  let (y, r) := select x l in Permutation (x :: l) (y :: r).
+Lemma select_perm:
+  forall (x : nat) (l : list nat),
+    let (y, r) := select x l in Permutation (x :: l) (y :: r).
 Proof.
   intros x l; revert x.
   induction l; intros; simpl in *. {
@@ -68,7 +67,7 @@ Proof.
 Qed.
 
 Lemma selsort_perm:
-  forall n l, length l = n -> Permutation l (selsort l n).
+  forall (n : nat) (l : list nat), length l = n -> Permutation l (selsort l n).
 Proof.
   induction n. {
     intros.
@@ -113,7 +112,7 @@ Proof.
 Qed.
 
 Theorem selection_sort_perm:
-  forall l, Permutation l (selection_sort l).
+  forall (l : list nat), Permutation l (selection_sort l).
 Proof.
   unfold selection_sort.
   intros.
@@ -125,7 +124,7 @@ Qed.
 (** * [select] selects the smallest element of a list *)
 
 Lemma select_smallest_aux:
-  forall x al y bl,
+  forall (x : nat) (al : list nat) (y : nat) (bl : list nat),
     Forall (fun z => y <= z) bl ->
     select x al = (y,bl) ->
     y <= x.
@@ -147,8 +146,9 @@ Proof.
 Qed.
 
 Theorem select_smallest:
-  forall x al y bl, select x al = (y,bl) ->
-     Forall (fun z => y <= z) bl.
+  forall (x : nat) (al : list nat) (y : nat) (bl : list nat),
+    select x al = (y,bl) ->
+    Forall (fun z => y <= z) bl.
 Proof.
   intros x al.
   revert x.
@@ -199,7 +199,7 @@ Qed.
 (** * A list applied with selection sort is sorted **)
 
 Lemma selection_sort_sorted_aux:
-  forall  y bl,
+  forall (y : nat) (bl : list nat),
    sorted (selsort bl (length bl)) ->
    Forall (fun z : nat => y <= z) bl ->
    sorted (y :: selsort bl (length bl)).
@@ -230,7 +230,7 @@ Proof.
 Qed.
 
 Theorem selection_sort_sorted:
-  forall al, sorted (selection_sort al).
+  forall (al : list nat), sorted (selection_sort al).
 Proof.
   intros.
   unfold selection_sort.
